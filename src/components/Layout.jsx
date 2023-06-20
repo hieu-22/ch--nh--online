@@ -387,10 +387,7 @@ const Layout = () => {
                     className="flex items-center gap-x-2 py-2 px-4 bg-stale hover:bg-background cursor-pointer"
                     onClick={() => {
                         if (!isLoggedIn) {
-                            if (
-                                window.location.href ===
-                                "http://localhost:3000/login"
-                            ) {
+                            if (window.location.pathname === "/login") {
                                 return handleShowToast("Vui lòng đăng nhập")
                             }
                             return navigate("/login")
@@ -407,10 +404,7 @@ const Layout = () => {
                     className="flex items-center gap-x-2 py-2 px-4 bg-stale hover:bg-background cursor-pointer"
                     onClick={() => {
                         if (!isLoggedIn) {
-                            if (
-                                window.location.href ===
-                                "http://localhost:3000/login"
-                            ) {
+                            if (window.location.pathname === "/login") {
                                 return handleShowToast("Vui lòng đăng nhập")
                             }
                             return navigate("/login")
@@ -434,10 +428,7 @@ const Layout = () => {
                     className="flex items-center gap-x-2 py-2 px-4 bg-stale hover:bg-background cursor-pointer"
                     onClick={() => {
                         if (!isLoggedIn) {
-                            if (
-                                window.location.href ===
-                                "http://localhost:3000/login"
-                            ) {
+                            if (window.location.pathname === "/login") {
                                 return handleShowToast("Vui lòng đăng nhập")
                             }
                             return navigate("/login")
@@ -454,10 +445,7 @@ const Layout = () => {
                     className="flex items-center gap-x-2 py-2 px-4 bg-stale hover:bg-background cursor-pointer"
                     onClick={() => {
                         if (!isLoggedIn) {
-                            if (
-                                window.location.href ===
-                                "http://localhost:3000/login"
-                            ) {
+                            if (window.location.pathname === "/login") {
                                 return handleShowToast("Vui lòng đăng nhập")
                             }
                             return navigate("/login")
@@ -474,10 +462,7 @@ const Layout = () => {
                     className="flex items-center gap-x-2 py-2 px-4 bg-stale hover:bg-background cursor-pointer"
                     onClick={() => {
                         if (!isLoggedIn) {
-                            if (
-                                window.location.href ===
-                                "http://localhost:3000/login"
-                            ) {
+                            if (window.location.pathname === "/login") {
                                 return handleShowToast("Vui lòng đăng nhập")
                             }
                             return navigate("/login")
@@ -500,10 +485,7 @@ const Layout = () => {
                     className="flex items-center gap-x-2 py-2 px-4 bg-stale hover:bg-background cursor-pointer"
                     onClick={() => {
                         if (!isLoggedIn) {
-                            if (
-                                window.location.href ===
-                                "http://localhost:3000/login"
-                            ) {
+                            if (window.location.pathname === "/login") {
                                 return handleShowToast("Vui lòng đăng nhập")
                             }
                             return navigate("/login")
