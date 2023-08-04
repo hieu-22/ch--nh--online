@@ -18,12 +18,17 @@ import { zonedTimeToUtc } from "date-fns-tz"
  */
 
 export const addTimeAgo = async (array, timeStampProp) => {
-    // return a new array of posts with timeAgo in each post
     const updatedArray = await array.map((item) => {
         const now = new Date()
         const from = new Date(item[timeStampProp])
 
         const timeAgoInMinutes = differenceInMinutes(now, from)
+        if (timeAgoInMinutes < 0) {
+            return {
+                ...item,
+                timeAgo: `1 phút trước`,
+            }
+        }
         if (timeAgoInMinutes < 61) {
             return {
                 ...item,
@@ -63,6 +68,7 @@ export const addTimeAgo = async (array, timeStampProp) => {
     })
     return updatedArray
 }
+
 export const toTimeAgo = (timeStamp) => {
     if (!timeStamp) return
 
