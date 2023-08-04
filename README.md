@@ -1,46 +1,253 @@
-# Getting Started with Create React App and Redux
+# The emarket web app (client)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This project is a simple e-commerce web app with core features are posting product, real-time chating which are built using popular technologies such as ReactJS, NodeJS, SocketIo, PostgreSQL, etc.
 
-## Available Scripts
+The app uses Node.js v18 as development environment.
 
-In the project directory, you can run:
+Source:
+- [Client](https://github.com/hieu-22/client-online-market-app.git)
+- [Server](https://github.com/hieu-22/server-online-market-app.git)
 
-### `npm start`
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
+Note: The app uses Node.js v18 as development environment.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Clone the repository:
+```sh
+$git clone https://github.com/hieu-22/client-online-market-app.git
+```
+Install dependencies by running `npm install`:
+```sh
+npm install
+```
+## Usage
+Set .env file
+```sh
+PORT=3000
+NODE_ENV=development
+REACT_APP_BACKEND_URL=http://localhost:3001/api
+REACT_APP_IS_LOCALHOST=1
 
-### `npm test`
+# CLOUDINARY config, default: 
+REACT_APP_CLOUDINARY_NAME="duhbzyhtj" 
+REACT_APP_CLOUDINARY_UNSIGNED_UPLOAD_PRESET="qtfrqrsg"
+```
+If you want to use your own Cloudinary for image storage, read [React SDK](https://cloudinary.com/documentation/react_integration) for more information.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Run app:
+```sh
+npm start
+```
+For more information: [React documentation](https://reactjs.org/).
 
-### `npm run build`
+## Features
+- Product Posting: Users can create their product information such as (images, title, prices, etc.). Other users can view, save, search, create chats with posts.
+- Realtime Chating: Users can chat to each other within or without a specific post.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies Used
+- ReactJS
+- Redux/@toolkit
+- SocketIO
+- Tailwind CSS
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Contributing
+1. [Appending features](#1-appending-features)
+2. [Website Layout](#2-website-layout)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 1. Appending features
+To add a new feature (Chat feature, for example), follow these steps:
+- Create a new folder name that represent for the feature (e.g. `./src/features/Chat`)
+- Create page (e.g. ChatPage.jsx)
+  ```javascript
+  //  ./src/features/Chat/ChatPage.jsx
+  
+  // import packages
+  import {useState, useEffect} from "react"
+  import {useSelector, useDispatch} from "react-redux"
+  // import state and avaiable components
+  const ChatPage = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    // # redux state 
+    // # write functionalities including state, effect, handler, etc.
+    
+    // # page components
+    const component = ({props}) => {
+      return (
+        <div className={`tailwindcss here`}> component </div>
+      )
+    }
+    
+    return (
+      // layout
+      <div className="tailwindcss">
+        <div className="tailwindcss"> {component} </div>
+      <div>
+    )
+  }
+  export default ChatPage
+  ```
+- Create a slice and api files for the feature (e.g. `chatSlice.js` and `chatApi.js`). Read [createSlice](https://redux-toolkit.js.org/api/createSlice) and [createAsyncThunk](https://redux-toolkit.js.org/api/createAsyncThunk) here.
+  ```javascript
+  // chatApi
+  import axios from "../../axios"
+  // import more here `import { addTimeAgo } from "../../utils/DateUtils"`
+  
+  export const addChatApi = async ({ userId, postId }) => {
+    const response = await axios.post(
+        `/conversations/create?userId=${userId}&postId=${postId}`
+    )
+    // handle retrieved before sending data to redux state
+    return response.data
+  }
+  // more APIs here
+  
+  ```
+  ```javascript
+  // chatSlice.js
+  import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+  import { addChatApi } from "./chatApi"
+  const initialState = {
+      chats: [],
+      // more states here
+      status: "idle",
+      error: null,
+  }
+  
+  // # Thunks
+  export const addChatThunk = createAsyncThunk(
+    "chat/addChatThunk",
+    async ({ userId, postId }, { rejectWithValue }) => {
+        try {
+            const data = await addChatApi({ userId, postId })
+            return data
+        } catch (error) {
+            // handling error with rejectWithValue()
+        }
+    }
+  )
+  // more thunks here
+  
+  const chatSlice = createSlice({
+    name: "chat",
+    initialState,
+    reducers: {
+      resetChatStatus(state, action) {
+            state.status = "idle"
+      },
+      // more actions here
+    },
+    extraReducers: (builder) => { 
+       builder
+            //addChatApi
+            .addCase(addChatApi.pending, (state) => {
+                state.status = "loading"
+            })
+            .addCase(addChatApi.fulfilled, (state, action) => {
+                state.status = "succeeded"
+                state.chats = action.payload
+            })
+            .addCase(addChatApi.rejected, (state, action) => {
+                state.status = "failed"
+                // do something with error
+            })
+            // more handlers here
+    }
+  }
 
-### `npm run eject`
+  export const selectAllChats = (state) => state.chat.chats
+  export const selectChatError = (state) => state.chat.error
+  export const selectChatStatus = (state) => state.chat.status
+  export const { resetChatStatus // , more actions} = chatSlice.actions
+  
+  export default chatSlice.reducer
+  
+  ```
+  ```javascript
+  // at ./src/app/store.js
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  import chatReducer from "../features/Chat/chatSlice"
+  // ...
+  export const store = configureStore({
+    reducer: {
+        // ...
+        chat: chatReducer,
+    },
+    // ...
+  }
+  ```
+- Apply page with a specific web pathname (e.g. `/chat`)
+  ```javascript
+  import React, { useEffect } from "react"
+  import { Routes, Route } from "react-router-dom"
+  import chatPage from "./features/Chat/chatPage"
+  
+  //...
+  
+  const App = () => {
+    return (
+       <Routes>
+        <Route path="/" element={<Layout />}>
+            // Other Routes ...
+            <Route path="/chat" element={<chatPage />} />
+        </Route>
+       </Routes>
+    )
+  }
+  
+  //...
+  export default App
+  
+  ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Folder structure:
+```sh
+├── public
+├── src
+│    ├── app/store.js
+│    ├── components
+│    ├── features
+│    │   ├── Chat
+│    │         ├── chatPage.jsx
+│    │         ├── chatSlice.js
+│    │         └── chatApi.js
+└── tailwind.config.js
+```
+### 2. Website Layout
+The Layout styles at `./src/components/Layout.jsx` affect to multiple components. The <Outlet /> in Layout represent for the actual page component (e.g. ChatPage.jsx).
+Read [`<Outlet>`](https://reactrouter.com/en/main/components/outlet)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Therefore, when modifying `Layout.jsx`, it's important to make sure that the changes do not break any other UI or functionalities.
+```javascript
+const Layout = () => {
+  // ...
+  const Header = (
+    <div>header ... </div>
+  )
+  const Footer = (
+    <div>Footer ... </div>
+  )
+  return (
+          <div>
+              <div className="layout style">{Header}</div>
+              <div className="layout style">
+                    <Outlet />
+              </div>
+              <div>{Footer}</div>
+          </div>
+  )
+}
+  
+export default Layout
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## License
+I'm happy that someone appreciates my project and use it for their studying or any purposes. It's free to use this project.
