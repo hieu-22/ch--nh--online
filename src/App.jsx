@@ -43,41 +43,44 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Homepage />} />
-                    <Route path="search" element={<SearchResultPage />} />
-                    <Route path="login" element={<LoginForm />} />
-                    <Route path="register" element={<RegisterForm />} />
+                    <Route path="/search" element={<SearchResultPage />} />
+                    <Route path="/login" element={<LoginForm />} />
+                    <Route path="/register" element={<RegisterForm />} />
                     <Route
-                        path="add-phone-number"
+                        path="/add-phone-number"
                         element={<PhoneNumberForm />}
                     />
-                    <Route path="user/:userId" element={<OtherUserPage />} />
+                    <Route path="/user/:userId" element={<OtherUserPage />} />
                     <Route
-                        path="users/suggests"
+                        path="/users/suggests"
                         element={<HintUsersListPage />}
                     />
                     <Route
-                        path="users/following"
+                        path="/users/following"
                         element={<FollowedUsersListPage />}
                     />
                     <Route
-                        path="user/setting/profile"
+                        path="/user/setting/profile"
                         element={<UserSettingPage />}
                     />
                     <Route
-                        path="user/myProfile"
+                        path="/user/myProfile"
                         element={<AuthorizedUserPage />}
                     />
 
-                    <Route path="posts/new-post" element={<AddPostPage />} />
+                    <Route path="/posts/new-post" element={<AddPostPage />} />
 
                     <Route
                         path="/posts/my-saved-posts"
                         element={<SavedPostsPage />}
                     />
-                    <Route path="posts/:postUrl" element={<SinglePostPage />} />
+                    <Route
+                        path="/posts/:postUrl"
+                        element={<SinglePostPage />}
+                    />
 
-                    <Route path="chat" element={<ChatPage />} />
-                    <Route path="chat/:chatId" element={<SingleChatPage />} />
+                    <Route path="/chat" element={<ChatPage />} />
+                    <Route path="/chat/:chatId" element={<SingleChatPage />} />
 
                     <Route
                         path="/dashboard/posts"
